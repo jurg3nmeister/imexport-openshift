@@ -1,16 +1,20 @@
 <?php
 
 $servername = getenv(strtoupper(getenv("DATABASE_SERVICE_NAME"))."_SERVICE_HOST");
+$dbname = getenv("DATABASE_NAME");
 $username = getenv("DATABASE_USER");
 $password = getenv("DATABASE_PASSWORD");
 
-// Create connection
-$conn = new mysqli($servername, $username, $password);
+// // Create connection
+$conn_string = "host=".$servername." dbname=".$dbname." user=".$username." password=".$password."";
+$connection = pg_connect($conn_string);
 
 // Check connection
-if ($conn->connect_error) {
-    header("HTTP/1.1 503 Service Unavailable");
-    die("Connection failed: " . $conn->connect_error);
+if($connection) {   
+  	echo "OK \n";
+  	echo $conn_string;
+}else{
+	header("HTTP/1.1 503 Service Unavailable");
+  	die("Connection failed: " . $connection);
 }
-echo "OK";
 ?>
