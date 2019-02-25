@@ -28,7 +28,7 @@ class AdmUsersController extends AppController {
 		if($this->Session->read('Role.id') <> 1){ //to avoid other users to edit SUPER USER imexport
 			$filters = array('AdmUser.id !='=>1);
 		}
-
+		
 		$this->paginate = array(
 			'conditions' => array(
 				$filters
@@ -82,10 +82,10 @@ class AdmUsersController extends AppController {
 		$periodInitial = key($periods);
 		$areas = $this->AdmUser->AdmUserRestriction->AdmArea->find('list', array('conditions' => array('AdmArea.period' => $periodInitial)));
 		$rolesTaken = array();
+		
 
-
-
-
+		
+		
 		$admUserRestriction = $this->AdmUser->AdmUserRestriction->find('all', array(
 			'conditions' => array(
 				'AdmUserRestriction.adm_user_id' => $id
@@ -99,11 +99,11 @@ class AdmUsersController extends AppController {
 		for ($i = 0; $i < count($admUserRestriction); $i++) {
 			$rolesTaken[$admUserRestriction[$i]['AdmUserRestriction']['adm_role_id']] = $admUserRestriction[$i]['AdmUserRestriction']['adm_role_id'];
 		}
-
+		
 		if($this->Session->read('Role.id') <> 1){
 			$rolesTaken[1] = 1;
 		}
-
+		
 		$roles = $this->AdmUser->AdmUserRestriction->AdmRole->find('list', array(
 			'conditions' => array('NOT' => array('AdmRole.id' => $rolesTaken))
 		));
@@ -123,11 +123,11 @@ class AdmUsersController extends AppController {
 
 		//$id = $this->passedArgs['id'];
 		$idUserRestriction = $this->passedArgs['idUserRestriction'];
-
+		
 		if($this->Session->read('Role.id') <> 1 AND $idUserRestriction == 1){
 			$this->redirect(array('action' => 'index')); //Only SUPER USER CAN EDIT its own account
 		}
-
+		
 		$AdmUserRestriction = $this->AdmUser->AdmUserRestriction->find('all', array(
 			'conditions' => array('AdmUserRestriction.id' => $idUserRestriction),
 			'fields' => array('AdmUserRestriction.selected', 'AdmUser.id', 'AdmUser.login', 'AdmUserRestriction.active_date', 'AdmUserRestriction.active', 'AdmUserRestriction.adm_role_id', 'AdmUserRestriction.adm_area_id', 'AdmUserRestriction.period'),
@@ -203,11 +203,11 @@ class AdmUsersController extends AppController {
 		if ($id == null) {
 			$this->redirect(array('action' => 'index'));
 		}
-
+		
 		if($this->Session->read('Role.id') <> 1 AND $id == 1){
 			$this->redirect(array('action' => 'index')); //Only SUPER USER CAN EDIT its own account
 		}
-
+		
 		$filters = array('AdmUserRestriction.adm_user_id' => $id, 'AdmUserRestriction.lc_state !=' => 'LOGIC_DELETED');
 		$this->paginate = array(
 			'conditions' => array(
@@ -252,8 +252,8 @@ class AdmUsersController extends AppController {
 	}
 
 	public function login() {
-//		debug($this->_fnCheckDeviceType());
-
+//		debug($this->_fnCheckDeviceType()); 
+		
 		//before everything verify if the browser is IE from windows
 		if (eregi("MSIE", getenv("HTTP_USER_AGENT")) || eregi("Internet Explorer", getenv("HTTP_USER_AGENT"))) {
 			$this->redirect(array('controller' => 'Pages', 'action' => 'ie_denied'));
@@ -333,9 +333,9 @@ class AdmUsersController extends AppController {
 				///////////////////////////////////////////////END OF VALIDATION////////////////////////////////////////////////////
 				//////////////////////////////////////////////START - LOGIN /////////////////////////////////////////////////////////
 				$this->_createUserAccountSession($userInfo['id'], 'login', $userPassword);
-				//////////////////////////////////////////////END - LOGIN /////////////////////////////////////////////////////////
+				//////////////////////////////////////////////END - LOGIN /////////////////////////////////////////////////////////		
 			} else {
-				$this->_createMessage('Usuario o contraseña incorrecta, intente de nuevo ok');
+				$this->_createMessage('Usuario o contraseña incorrecta, intente de nuevo');
 			}
 		}
 	}
@@ -373,15 +373,11 @@ class AdmUsersController extends AppController {
 
 		if ($userPassword <> null) {//for dynamic user password change
 			$userPasswordEncrypted = $this->BittionSecurity->encryptUserSessionPassword($userPassword);
-$passdecr = $this->BittionSecurity->decryptUserSessionPassword($userPasswordEncrypted);
-debug("dd .$passdecr. dd");
-printf("dd .$passdecr. dd");
-die;
 			$this->Session->write('User.password', $userPasswordEncrypted);
 		}
 
 		$this->Session->write('currentDeviceTyoe', $this->_fnCheckDeviceType());
-
+		
 		$this->Session->write('currentRoleActive', 'yes');
 		$this->Session->write('UserRestriction.id', $infoRole[0]['AdmUserRestriction']['id']);  //in case there is no trigger postgres user integration, it will help
 		$this->Session->write('User.username', $infoRole[0]['AdmUser']['login']);
@@ -434,14 +430,14 @@ die;
 ////			$this->_createMessage($e);
 //			$this->redirect($this->Auth->logout());
 //		}
-
-	//End function
+	
+	//End function	
 	}
 
 	public function change_password() {
-
+		
 	}
-
+	
 	private function _fnCheckDeviceType(){
 		$dirVendors = App::path('Vendor'); //[0] is /app/Vendor and 1 is /vendors
 		require_once $dirVendors[0] . 'Mobile_Detect.php';
@@ -453,7 +449,7 @@ die;
 //		debug($scriptVersion);
 //		debug($_SERVER['HTTP_USER_AGENT']);
 	}
-
+	
 	public function ajax_change_password() {
 		if ($this->RequestHandler->isAjax()) {
 			$password = $this->request->data['password'];
@@ -482,7 +478,7 @@ die;
 	}
 
 	public function change_email() {
-
+		
 	}
 
 	public function ajax_change_email() {
@@ -542,7 +538,7 @@ die;
 				'AdmUserRestriction.id'=>key($idUserRestrictionSelected)
 				, 'AdmUserRestriction.lc_state'=>'LOGIC_DELETED')
 		));
-
+		
 		if($chechLogicDeleted > 0){
 			$this->Session->setFlash(
 						'<strong>El rol fue eliminado!</strong>', 'alert', array(
@@ -552,7 +548,7 @@ die;
 				);
 			$this->redirect($this->Auth->logout());
 		}
-
+		
 		try {
 			if (!$this->AdmUser->change_user_restriction($idUser, key($idUserRestrictionSelected))) {
 				$this->Session->setFlash(
@@ -680,9 +676,9 @@ die;
 //		}else{
 //			$link = '/' . $controlerName . '/' . $actionName;  //for remote
 //		}
-
-
-		$idForLi = $controlerName.'-'. $actionName;
+		
+		
+		$idForLi = $controlerName.'-'. $actionName; 
 
 		$actionEmpty = 'no';
 		if ($vec[0]['AdmAction']['name'] == null) {
@@ -712,7 +708,7 @@ die;
 			  $idName = 'sal';
 			  break;
 			  }
-			 *
+			 * 
 			 */
 			if ($vec[0]['AdmAction']['name'] == null) {
 				$idForLi = 'menu-' . $nameMenu;
@@ -799,7 +795,7 @@ die;
 		$this->Session->write('Permission.AdmUsers.view_user_profile', 'view_user_profile');
 		$this->Session->write('Permission.AdmUsers.ie_denied', 'ie_denied');
 
-		///// save in session array
+		///// save in session array 
 		for ($i = 0; $i < count($merge); $i++) {
 			$this->Session->write('Permission.' . $merge[$i]['controller'] . '.' . $merge[$i]['action'], $merge[$i]['action']);
 		}
@@ -975,7 +971,7 @@ die;
 				'fields' => array('AdmUser.id', 'AdmUser.login')
 			));
 			$username = reset($usernameArray);
-
+			
 			if ($this->AdmUser->fnChangePassword($idUser, $password, $username)) {
 				if ($password <> '') {
 					if ($username == $this->Session->read('User.username')) {
@@ -1047,7 +1043,7 @@ die;
 			if (isset($this->request->data['selected'])) {
 				$AdmUserRestriction['selected'] = $this->request->data['selected'];
 //				$ownUserRestriction = 'yes';
-			} else {//if the is not selected, it means the owner is editing its own role, because that control is erased when that happens
+			} else {//if the is not selected, it means the owner is editing its own role, because that control is erased when that happens 
 				$ownUserRestriction = 'yes';
 			}
 //			debug($AdmUserRestriction);
@@ -1216,7 +1212,7 @@ die;
 //			debug($data);
 //			$data['AdmUserRestriction']['id']=$idUserRestriction;
 //			debug($data);
-
+			
 			try{
 				$this->AdmUser->AdmUserRestriction->save($data);
 				$this->Session->setFlash(
@@ -1244,7 +1240,7 @@ die;
 //				debug($string);
 				$this->redirect(array('action' => 'index_user_restriction', $idUser));
 			}
-
+			
 			if ($this->AdmUser->AdmUserRestriction->save($data)) {
 				$this->Session->setFlash(
 						'Eliminado con exito!', 'alert', array(
@@ -1265,5 +1261,6 @@ die;
 		}
 	}
 
-//END Class
+//END Class	
 }
+

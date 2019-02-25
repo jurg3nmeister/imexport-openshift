@@ -41,7 +41,7 @@ class AppController extends Controller {
 		'Paginator' => array('className' => 'TwitterBootstrap.BootstrapPaginator'),
 	);
 	public $components = array(
-		'DebugKit.toolbar'
+		'DebugKit.Toolbar',
 		'RequestHandler',
 		'Session',
 		'BittionMain',
