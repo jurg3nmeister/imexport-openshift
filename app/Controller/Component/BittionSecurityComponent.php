@@ -6,11 +6,11 @@ class BittionSecurityComponent extends Component{
 
 	public function encryptUserSessionPassword($text){
 //		$encrypt = Security::rijndael($auth['login'], '495d654f495d654f495d654f495d654f', 'encrypt');
-		return Security::rijndael($text, $this->userSessionPasswordKey, 'encrypt');
+		return Security::cipher($text, $this->userSessionPasswordKey);
 	}
 
 	public function decryptUserSessionPassword($text){
-		return Security::rijndael($text, $this->userSessionPasswordKey, 'decrypt');
+		return Security::cipher($text, $this->userSessionPasswordKey);
 	}
 
 	public function allowPermission($controllerName, $actionName, $normalActions) {
