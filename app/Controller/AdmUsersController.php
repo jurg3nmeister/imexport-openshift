@@ -275,10 +275,6 @@ class AdmUsersController extends AppController {
 				$this->redirect(array('controller' => 'AdmUsers', 'action' => 'login'));
 			}
 			*/
-			debug($this->Auth->login());
-debug(AuthComponent::password($this->request->data['AdmUser']['password']));
-die;
-
 			if ($this->Auth->login()) { //If authentication is valid username and password
 				/////////////////////////////////////////////BEGIN OF VALIDATION///////////////////////////////////////////////////
 				$userInfo = $this->Auth->user();
