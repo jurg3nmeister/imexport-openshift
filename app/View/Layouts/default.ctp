@@ -1,4 +1,4 @@
-<?php $cakeDescription = __d('cake_dev', 'IMEXPORT SRL'); ?>
+<?php $cakeDescription = __d('cake_dev', 'BITEONVENTORY'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,7 +47,7 @@
 <body>
 	<?php ;?>
 	<div id="header">
-		<h1>IMEXPORT SRL</h1>
+		<h1>BITEONVENTORY</h1>
 		<span id="currentDeviceType" style="visibility:hidden;"><?php echo $this->Session->read('currentDeviceTyoe'); ?></span>
 	</div>
 

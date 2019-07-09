@@ -1,4 +1,4 @@
-<?php $cakeDescription = __d('cake_dev', 'IMEXPORT SRL'); ?>
+<?php $cakeDescription = __d('cake_dev', 'BITEONVENTORY'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
