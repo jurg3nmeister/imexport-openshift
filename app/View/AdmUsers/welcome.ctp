@@ -1,7 +1,7 @@
 <?php // echo $this->set('aqui va el tityulo');   ?>
 <!--<div style="text-align: center">-->
 <div style=" font-size: 28px; font-weight: bold; ">
-	SISTEMA IMEXPORT
+	BITEONVENTORY
 </div>
 <br>
 <!--</div>-->
@@ -16,5 +16,3 @@
 	<a href="#" data-dismiss="alert" class="close">×</a>
 </div>
 <?php echo $this->Session->flash('flash_change_user_restriction');?>
-
-<?php echo $this->Html->image('logo-imexport.png', array('alt' => 'Imexport', 'width'=>'700px')); ?>
